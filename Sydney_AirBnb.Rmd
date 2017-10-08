@@ -1,0 +1,87 @@
+---
+title: "Sydney-AirBnb"
+author: "Scott Onestak"
+date: "July 20, 2017"
+output: 
+   html_document:
+    theme: united
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r packages}
+library(dplyr)
+
+```
+
+#Read in the Data
+```{r data, cache = T}
+sydney_airbnb = read.csv("sydney-airbnb.csv", header = T)
+rent = read.csv("rent_info.csv", header = T)
+school = read.csv("public_school.csv", header = T)
+```
+
+#Change Data Types and Create New Variables
+```{r data types, cache = T}
+#rent
+rent = rent[,c(1:8)]
+rent$PremisesDwellingType = as.factor(rent$PremisesDwellingType)
+rent$Premises_Suburb = as.factor(rent$Premises_Suburb)
+rent$BondAmount = gsub('\\$','',rent$BondAmount)
+rent$BondAmount = as.integer(gsub(',','',rent$BondAmount))
+rent$PremisesWeeklyRent = as.integer(gsub('\\$','',rent$PremisesWeeklyRent))
+rent$Premises_Postcode = as.factor(rent$Premises_Postcode)
+rent$NumberBedrooms = as.numeric(as.character(rent$NumberBedrooms))
+
+
+colnames(rent)[8] = "suburb"
+
+#school
+school = school[,c(1,5:10)]
+school$student_number = as.numeric(as.character(school$student_number))
+school$indigenous_pct = as.numeric(as.character(school$indigenous_pct))
+school$lbote_pct = as.numeric(as.character(school$lbote_pct))
+school$town_suburb = as.character(school$town_suburb)
+school$ind_cnt = 0
+school$lbote_cnt = 0
+
+for(i in seq(1:dim(school)[1])){
+  
+  school[i,2] = toupper(school[i,2])
+  
+  if(is.na(school[i,4]) | is.na(school[i,5])){
+    school[i,8] = NA
+  } else {
+    school[i,8] = school[i,4] * (school[i,5]/100)
+  }
+  
+  if(is.na(school[i,4]) | is.na(school[i,6])){
+    school[i,9] = NA
+  } else {
+    school[i,9] = school[i,4] * (school[i,6]/100)
+  }
+}
+
+school$town_suburb = as.factor(school$town_suburb)
+
+colnames(school)[2] = "suburb"
+```
+
+#Aggregate to get Final Variable Values
+
+
+
+
+
+
+
+
+
+
+
