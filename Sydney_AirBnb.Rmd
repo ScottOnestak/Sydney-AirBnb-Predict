@@ -74,7 +74,149 @@ colnames(school)[2] = "suburb"
 ```
 
 #Aggregate to get Final Variable Values
+```{r aggregates, cache = T}
+rent = rent[which(rent$BondAmount > 0 & rent$PremisesWeeklyRent > 0),]
+rent$Bedrooms = as.integer(rent$NumberBedrooms)
+rent$Bedrooms[rent$NumberBedrooms > 10] = 10
+rent$suburb[rent$suburb == "ABERGLASSYN"] = "ABERGLASSLYN"
+rent$suburb[rent$suburb == "ABERDALE"] = "ABERDARE"
+rent$suburb[rent$suburb == "AUBURN MC"] = "AUBURN"
+rent$suburb[rent$suburb == "AVOCA BCH"] = "AVOCA"
+rent$suburb[rent$suburb == "AVOCA BEACH"] = "AVOCA"
+rent$suburb[rent$suburb == "AVALON BCH"] = "AVALON"
+rent$suburb[rent$suburb == "AVALON BEACH"] = "AVALON"
+rent$suburb[rent$suburb == "BAERAMI CREEK"] = "BAERAMI"
+rent$suburb[rent$suburb == "BAULKHAM HILL"] = "BAULKHAM HILLS"
+rent$suburb[rent$suburb == "BAULKHAM HILLS MC"] = "BAULKHAM HILLS"
+rent$suburb[rent$suburb == "BAULKHAM HILS"] = "BAULKHAM HILLS"
+rent$suburb[rent$suburb == "BAY VIEW"] = "BAYVIEW"
+rent$suburb[rent$suburb == "BAYVIEW HEIGHTS"] = "BAYVIEW"
+rent$suburb[rent$suburb == "BEAUMONT"] = "BEAUMONT HILLS"
+rent$suburb[rent$suburb == "BEAUMONTH HILLS"] = "BEAUMONT HILLS"
+rent$suburb[rent$suburb == "BEVERLY PARK"] = "BEVERLEY PARK"
+rent$suburb[rent$suburb == "BILGOLA BEACH"] = "BILGOLA"
+rent$suburb[rent$suburb == "BILGOLA PLATEAU"] = "BILGOLA"
+rent$suburb[rent$suburb == "BIRGHGROVE"] = "BIRCHGROVE"
+rent$suburb[rent$suburb == "BONDI JUNCTION MC"] = "BONDI JUNCTION"
+rent$suburb[rent$suburb == "BONDI NORTH"] = "NORTH BONDI"
+rent$suburb[rent$suburb == "BONNYRIGG HEIGHTS"] = "BONNYRIGG"
+rent$suburb[rent$suburb == "BRIGHTON LE SANDS"] = "BRIGHTON-LE-SANDS"
+rent$suburb[rent$suburb == "BRONTE BEACH"] = "BRONTE"
+rent$suburb[rent$suburb == "CAMPSIE SOUTH"] = "CAMPSIE"
+rent$suburb[rent$suburb == "CARINGBAH NTH"] = "CARINGBAH NTH"
+rent$suburb[rent$suburb == "CHESTERHILL"] = "CHESTER HILL"
+rent$suburb[rent$suburb == "CLEMTON PARK"] = "CLEMPTON PARK"
+rent$suburb[rent$suburb == "CLOVELLY BEACH"] = "CLOVELLY"
+rent$suburb[rent$suburb == "DARLINGHURST MC"] = "DARLINGHURST"
+rent$suburb[rent$suburb == "DARLINGTON (SING)"] = "DARLINGTON"
+rent$suburb[rent$suburb == "DARLINGTON PT"] = "DARLINGTON"
+rent$suburb[rent$suburb == "DARLINGTON POINT"] = "DARLINGTON"
+rent$suburb[rent$suburb == "DARLINGTON ESTATE"] = "DARLINGTON"
+rent$suburb[rent$suburb == "DENISTON EAST"] = "DENISTONE EAST"
+rent$suburb[rent$suburb == "DENISTON"] = "DENISTONE"
+rent$suburb[rent$suburb == "EASTLAKE"] = "EASTLAKES"
+rent$suburb[rent$suburb == "EDGECLIFFE"] = "EDGECLIFF"
+rent$suburb[rent$suburb == "EDMONSON PARK"] = "EDMONDSON PARK"
+rent$suburb[rent$suburb == "FORESTLODGE"] = "FOREST LODGE"
+rent$suburb[rent$suburb == "GLEBE POINT"] = "GLEBE"
+rent$suburb[rent$suburb == "GLEN HAVEN"] = "GLENHAVEN"
+rent$suburb[rent$suburb == "ILLAWONG (MENAI)"] = "ILLAWONG"
+rent$suburb[rent$suburb == "KINGSFORD NSW"] = "KINGSFORD"
+rent$suburb[rent$suburb == "KURRABA PT"] = "KURRABA POINT"
+rent$suburb[rent$suburb == "LALOR PK"] = "LALOR PARK"
+rent$suburb[rent$suburb == "LIVERPOOL BC"] = "LIVERPOOL"
+rent$suburb[rent$suburb == "LIVERPOOL MC"] = "LIVERPOOL"
+rent$suburb[rent$suburb == "MARAYLA"] = "MARAYLYA"
+rent$suburb[rent$suburb == "MAROUBRA BEACH"] = "MAROUBRA"
+rent$suburb[rent$suburb == "MAROUBRA JUNCTION"] = "MAROUBRA"
+rent$suburb[rent$suburb == "SOUTH MAROUBRA"] = "MAROUBRA"
+rent$suburb[rent$suburb == "MILSON'S POINT"] = "MILSONS POINT"
+rent$suburb[rent$suburb == "MONTERAY"] = "MONTEREY"
+rent$suburb[rent$suburb == "NEWPORT BEACH"] = "NEWPORT"
+rent$suburb[rent$suburb == "NEWTOWN NSW"] = "NEWTOWN"
+rent$suburb[rent$suburb == "NORTH SYDNEY MC"] = "NORTH SYDNEY"
+rent$suburb[rent$suburb == "NTH MANLY"] = "NORTH MANLY"
+rent$suburb[rent$suburb == "NTH TURRAMURRA"] = "NORTH TURRAMURRA"
+rent$suburb[rent$suburb == "PARRAMATTA NORTH"] = "NORTH PARRAMATTA"
+rent$suburb[rent$suburb == "PENDLE HILL STH"] = "PENDLE HILL"
+rent$suburb[rent$suburb == "POTTS POINT MC"] = "POTTS POINT"
+rent$suburb[rent$suburb == "PRESTON"] = "PRESTONS"
+rent$suburb[rent$suburb == "PRESTON"] = "PRESTONS"
+rent$suburb[rent$suburb == "PUNCHBOWL STH"] = "PUNCHBOWL"
+rent$suburb[rent$suburb == "PYRMONT POINT"] = "PYRMONT"
+rent$suburb[rent$suburb == "QUEENSCLIFFE"] = "QUEENSCLIFF"
+rent$suburb[rent$suburb == "RANDWICK NORTH"] = "RANDWICK"
+rent$suburb[rent$suburb == "REDFERN EAST"] = "REDFERN"
+rent$suburb[rent$suburb == "ROOTY HILL NTH"] = "ROOTY HILL"
+rent$suburb[rent$suburb == "ROSE BAY NORTH"] = "ROSE BAY"
+rent$suburb[rent$suburb == "ROSE BAY NTH"] = "ROSE BAY"
+rent$suburb[rent$suburb == "ROSE HILL"] = "ROSEHILL"
+rent$suburb[rent$suburb == "ROSELAND"] = "ROSELANDS"
+rent$suburb[rent$suburb == "RUSSEL LEA"] = "RUSSELL LEA"
+rent$suburb[rent$suburb == "RYDE MC"] = "WEST RYDE"
+rent$suburb[rent$suburb == "RYDE WEST"] = "RYDE"
+rent$suburb[rent$suburb == "SEVEN HILLS WEST"] = "SEVEN HILLS"
+rent$suburb[rent$suburb == "SILVERWATER (MORISET"] = "SILVERWATER"
+rent$suburb[rent$suburb == "SILVERWATER(LIDCOMB)"] = "SILVERWATER"
+rent$suburb[rent$suburb == "STANHOPE"] = "STANHOPE GARDENS"
+rent$suburb[rent$suburb == "STh COOGEE"] = "SOUTH COOGEE"
+rent$suburb[rent$suburb == "STH GRANVILLE"] = "SOUTH GRANVILLE"
+rent$suburb[rent$suburb == "STH TURRAMURRA"] = "SOUTH TURRAMURRA"
+rent$suburb[rent$suburb == "STH STRATHFIELD"] = "STRATHFIELD SOUTH"
+rent$suburb[rent$suburb == "STRATHFIELD STH"] = "STRATHFIELD SOUTH"
+rent$suburb[rent$suburb == "STRATHFIELD WEST"] = "STRATHFIELD"
+rent$suburb[rent$suburb == "SURREY HILLS"] = "SURRY HILLS"
+rent$suburb[rent$suburb == "SUTHERLAND MC"] = "SUTHERLAND"
+rent$suburb[rent$suburb == "SYDNEY SOUTH"] = "SYDNEY"
+rent$suburb[rent$suburb == "TAMARRAMA"] = "TAMARAMA"
+rent$suburb[rent$suburb == "THE ROCK"] = "THE ROCKS"
+rent$suburb[rent$suburb == "WATTLEGROVE"] = "WATTLE GROVE"
+rent$suburb[rent$suburb == "WEST HOXTON PK"] = "WEST HOXTON"
+rent$suburb[rent$suburb == "WEST RYDE MC"] = "WEST RYDE"
+rent$suburb[rent$suburb == "WILLOUGHBY NORTH"] = "WILLOUGHBY"
+rent$suburb[rent$suburb == "WINSTON HILL"] = "WINSTON HILLS"
+rent$suburb[rent$suburb == "YAGOONA WEST"] = "YAGOONA"
+rent$suburb[rent$suburb == "YOWIE"] = "YOWIE BAY"
 
+
+
+
+suburbs = rent %>%
+  group_by(suburb) %>%
+  summarize(mean_rent = mean(PremisesWeeklyRent, na.rm=T),
+            mean_bond_suburb = mean(BondAmount, na.rm=T),
+            median_rent_suburb = median(PremisesWeeklyRent,na.rm=T),
+            median_bond_suburb = median(BondAmount, na.rm=T),
+            sd_rent_suburb = sd(PremisesWeeklyRent, na.rm=T),
+            sd_bond_suburb = sd(BondAmount, na.rm=T))
+
+type = rent %>%
+  group_by(PremisesDwellingType) %>%
+  summarize(mean_rent = mean(PremisesWeeklyRent, na.rm=T),
+            mean_bond_type = mean(BondAmount, na.rm=T),
+            median_rent_type  = median(PremisesWeeklyRent,na.rm=T),
+            median_bond_type  = median(BondAmount, na.rm=T),
+            sd_rent_type  = sd(PremisesWeeklyRent, na.rm=T),
+            sd_bond_type  = sd(BondAmount, na.rm=T))
+
+bedrooms = rent %>%
+  group_by(Bedrooms) %>%
+  summarize(mean_rent = mean(PremisesWeeklyRent, na.rm=T),
+            mean_bond_bedroom = mean(BondAmount, na.rm=T),
+            median_rent_bedroom = median(PremisesWeeklyRent,na.rm=T),
+            median_bond_bedroom = median(BondAmount, na.rm=T),
+            sd_rent_bedroom = sd(PremisesWeeklyRent, na.rm=T),
+            sd_bond_bedroom = sd(BondAmount, na.rm=T))
+
+school = school[which(!is.na(school$student_number) & !is.na(school$indigenous_pct) & !is.na(school$lbote_pct) & !is.na(school$ICSEA_Value)),]
+
+School_sum = school %>%
+  group_by(suburb) %>%
+  summarize(student_number = sum(student_number, na.rm=T),
+            indigenous_cnt = sum(ind_cnt, na.rm=T),
+            lbote_cnt = sum(lbote_cnt, na.rm=T),
+            ICSEA = mean(ICSEA_Value, na.rm=T))
+```
 
 
 
