@@ -1,6 +1,6 @@
 # Sydney-AirBnb-Predict
 
-In Progress:
+*In Progress:*
 
 Links to additional files used in analysis:
 
