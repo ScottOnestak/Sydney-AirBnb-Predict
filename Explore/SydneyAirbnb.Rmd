@@ -1,0 +1,57 @@
+---
+title: "Sydney Airbnb"
+author: "Scott Onestak"
+date: "March 21, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages}
+if (!require(rgdal)) {install.packages("rgdal")}
+if (!require(geojsonio)) {install.packages("geojsonio")}
+if (!require(sp)) {install.packages("sp")}
+if (!require(maps)) {install.packages("maps")}
+if (!require(ggmap)) {install.packages("ggmap")}
+if (!require(maptools)) {install.packages("maptools")}
+if (!require(dplyr)) {install.packages("dplyr")}
+if (!require(leaflet)) {install.packages("leaflet")}
+
+library(rgdal)
+library(geojsonio)
+library(sp)
+library(maps)
+library(ggmap)
+library(maptools)
+library(dplyr)
+library(leaflet)
+```
+
+
+```{r read in data}
+sydney = geojson_read("sydney-airbnb-open-data/neighbourhoods.geojson", what = "sp")
+syd = fortify(sydney)
+syd$id = as.numeric(syd$id)
+neighbourhoods = as.data.frame(sydney@data$neighbourhood)
+colnames(neighbourhoods) = "neighbourhood"
+neighbourhoods$id = 0:37
+syd = syd %>% left_join(.,neighbourhoods,by="id") %>% select(neighbourhood,id,piece,group,order,hole,lat,long)
+
+sydneyairbnb = read.csv("sydney-airbnb.csv")
+```
+
+```{r make map}
+syd_map = ggplot(syd,aes(x=long,y=lat),col="black",fill=NA) +
+  geom_polygon(color = 'black',size=1,aes(group=group),fill=NA) + 
+    geom_point(data=sydneyairbnb,aes(x=longitude,y=latitude,col=sydneyairbnb$neighborhood),size=.25) +
+  coord_fixed(1.3) + ggtitle("Sydney Neighbourhoods") +
+  theme(plot.title = element_text(hjust = 0.5),
+            panel.background = element_blank(),
+            axis.title = element_blank(),
+            axis.line = element_blank(),
+            axis.text = element_blank(),
+            axis.ticks = element_blank()) 
+syd_map
+```
